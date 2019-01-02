@@ -7,24 +7,40 @@
     </head>
     <body>
         <?php
+            // make sure all prior cached data is erased
+            session_destroy();
             session_start();
-            $problem = "";
+            $_SESSION['problem'] = NULL;
         
             // Check to see if all the fields are inputted correctly
             if((isset($_POST['pile1'])) && (isset($_POST['pile2'])) && (isset($_POST['submit']))){
                 $starting_pile1 = $_POST['pile1'];
                 $starting_pile2 = $_POST['pile2'];
                 if(!is_numeric($starting_pile1) || !is_numeric($starting_pile2)  && (isset($_POST['submit']))){
-                    $problem = "Check all fields and make sure you've entered valid numbers. 1";
+                    $_SESSION['problem'] = "Check all fields and make sure you've entered valid numbers.";
                 }
                 else{
                      //Check and see if number of stones is aligned with the rules
-                    if(($starting_pile1 < 0) or ($starting_pile2 < 0) && (isset($_POST['submit']))){
-                        $problem = "Check all fields and make sure you've entered valid numbers. 2";
+                    if(($starting_pile1 <= 0) || ($starting_pile2 <= 0) && (isset($_POST['submit']))){
+                        $_SESSION['problem'] = "Check all fields and make sure you've entered valid numbers.";
                     }
                     else{
                         $_SESSION['pile1']  = $_POST['pile1'];
                         $_SESSION['pile2'] = $_POST['pile2'];
+                        // First turn. Will change after the first turn.
+                        $_SESSION['turn'] = "Your Turn";
+                        $_SESSION['first_turn'] = TRUE;
+
+                        //Variable that shows who won
+                        $_SESSION['winner'] = NULL;
+
+                        //Variables to keep track of how many stones the computer takes away
+                        $_SESSION['taken_1'] = NULL;
+                        $_SESSION['taken_2'] = NULL;
+
+                        //Error message
+                        $_SESSION['errormsg'] = NULL;
+
                         header("Location: include/start.php");
                     }
                 }
@@ -50,9 +66,9 @@
                         <input class="input1" autocomplete="off" name="pile1" value="Pile 1" onfocus="if (this.value=='Pile 1') this.value='';"/>
                         <input class ="input2" autocomplete="off"  name="pile2" value="Pile 2" onfocus="if (this.value=='Pile 2') this.value='';" />
                         <button class="submit_button" name="submit" >START PLAYING!</button>
+                        <h3><?php echo $_SESSION['problem'] ?></h3>
                     </form>
                 </div>
-                <p><?php echo $problem ?></p>
             </div>
         </div>
     </body>

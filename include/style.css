@@ -161,14 +161,6 @@ html, body {
   overflow: hidden;
 }
 
-html {
-  background: #333 url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/68397/forest-fly-agaric-fog-moss-fliegenpilz.jpg) no-repeat center bottom;
-  background-size: cover;
-}
-
-body {
-  box-shadow: inset 0 0 5em #000;
-}
 
 input {
   box-sizing: border-box;
@@ -199,3 +191,6 @@ input {
     margin: auto;
 }
 
+body h3{
+  text-align: center;
+}
